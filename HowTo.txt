@@ -1,0 +1,5 @@
+On a linux machine the following program can be complied and run using the following commands:
+
+javac Calculator.java
+
+java Calculator

@@ -40,7 +40,7 @@ public class Calculator {
         return product;
     }
 
-    // Higher returned value means higher precedence
+    // The higher the number returned the higher the precedence
     static int DefinePrecedence(String x) {
         switch (x) {
         case "+":
@@ -54,9 +54,10 @@ public class Calculator {
         case "^":
             return 3;
         }
-        return -1;
+        return -1;// symbol not recognized
     }
 
+    // solves equation based on operator
     static int recognizeOperator(String operator, int firstNumber, int secondNumber) {
 
         int solution = 0;
@@ -91,6 +92,7 @@ public class Calculator {
 
     }
 
+    // breaks up equation and stores it in arrayList for easier reading
     static ArrayList<String> parseEquation(String x) {
 
         String parsedS = "";
@@ -143,15 +145,16 @@ public class Calculator {
         return arr;
     }
 
+    // method converts an infix equation stored in an ArrayList to postfix
     static ArrayList<String> infixToPostfix(String infixEquation) {
 
         String postfixExpression = "";
 
         Stack<String> stack = new Stack<>();
 
-        ArrayList<String> arr = parseEquation(infixEquation);
+        ArrayList<String> arr = parseEquation(infixEquation);// infix
 
-        ArrayList<String> arrPost = new ArrayList<String>();
+        ArrayList<String> arrPost = new ArrayList<String>();// postfix
 
         String popped = "";
 
@@ -159,18 +162,18 @@ public class Calculator {
 
             String c = arr.get(i);
 
-            // If the scanned character is an operand, add it to output.
+            // If element is an operand(number) add to ArrayList
             if (!c.equals("+") && !c.equals("-") && !c.equals("*") && !c.equals("/") && !c.equals("^") && !c.equals("(")
                     && !c.equals(")")) {
 
                 arrPost.add(c);
 
-            // If the scanned character is an '(', push it to the stack.
+                // If the element is an open parenthesis push to stack
             } else if (c.equals("(")) {
                 stack.push(c);
 
-                // If the scanned character is an ')', pop and output from the stack
-                // until an '(' is encountered.
+                // If the element is a closed parethesis pop stack until a closed parethesis is
+                // found
             } else if (c.equals(")")) {
 
                 while (!stack.isEmpty() && !stack.peek().equals("(")) {
@@ -181,15 +184,14 @@ public class Calculator {
 
                 if (!stack.isEmpty() && !stack.peek().equals("(")) {
 
-                    return arr;
+                    return arr;// incorrect number of parenthesis
 
                 } else {
                     stack.pop();
                 }
 
-            } else // an operator is encountered
-            {
-
+            } else {
+                // an operator encountered
                 while (!stack.isEmpty() && DefinePrecedence(c) <= DefinePrecedence(stack.peek())) {
                     if (stack.peek().equals("(")) {
                         // incorrect parenthesis
@@ -205,7 +207,8 @@ public class Calculator {
 
         }
 
-        // pop all the operators from the stack
+        // since we are using postfix the operator left in stack need to be popped
+        // out and added to final ArrayList
         while (!stack.isEmpty()) {
             if (stack.peek().equals("(")) {
 
@@ -222,7 +225,7 @@ public class Calculator {
     }
 
     static int evaluatePostfix(ArrayList<String> postfixExpression) {
-        // if next char is an operand push to stack if char is an operator
+        // if next element is an operand push to stack if element is an operator
         // pop two most recent numbers and call method to evaluate equation based
         // on what operator it is then push back to stack
 
@@ -334,22 +337,19 @@ public class Calculator {
     }
 
     public static void main(String[] args) {
-        // key to this thing will be to have user input entire equation at once and
-        // return postfixExpression from there
-        // keeping the calucations going can be a question after postfixExpression was
-        // returned
+
         Scanner keyboard = new Scanner(System.in);
 
-        System.out.println("Input an entire equation..");
+        System.out.println("Input your equation..");
         String inputEntireEquation = keyboard.nextLine();
 
         System.out.println("Infix Notation: " + inputEntireEquation);
 
-        // this for loop can have all error checking
+        // error checking
         if (checkForCorrectNumberOfOperators(inputEntireEquation) && equationStartAndFinish(inputEntireEquation)
                 && checkPar(inputEntireEquation) && onlyDigits(inputEntireEquation)) {
             ArrayList<String> arr = parseEquation(inputEntireEquation);
-            System.out.println(arr);
+
             ArrayList<String> arrPost = infixToPostfix(inputEntireEquation);
 
             System.out.print("Postfix Notation: ");
