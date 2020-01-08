@@ -348,6 +348,9 @@ public class Calculator {
         // error checking
         if (checkForCorrectNumberOfOperators(inputEntireEquation) && equationStartAndFinish(inputEntireEquation)
                 && checkPar(inputEntireEquation) && onlyDigits(inputEntireEquation)) {
+
+        try{
+
             ArrayList<String> arr = parseEquation(inputEntireEquation);
 
             ArrayList<String> arrPost = infixToPostfix(inputEntireEquation);
@@ -358,6 +361,12 @@ public class Calculator {
             solution = evaluatePostfix(arrPost);
 
             System.out.println("\nSolution " + solution);
+
+        }catch(Exception e){
+
+            System.out.println("Operation not recognized");
+        }
+            
 
         }
 
